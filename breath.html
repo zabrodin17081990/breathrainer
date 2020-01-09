@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<head>
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"  type="text/javascript"></script>
+</head>
+<body>
+	<script type="text/javascript">
+		var startSound = new Audio('start.wav');
+		var endSound = new Audio('end.wav');
+		
+		var startSoundIntervals = [0, 1*60, 2*60, 3*60, 4*60, 5*60, 6*60, 8*60, 10*60, 12*60, 14*60, 16*60];
+		var endSoundIntervals = [30, 1*60+35, 2*60+40, 3*60+45, 4*60+50, 5*60+55, 6*60+60, 8*60+65, 10*60+70, 12*60+75, 14*60+80, 16*60+85];
+
+		function playStart(index) {
+			var index = index || 0;
+			if (typeof(startSoundIntervals[index]) != 'undefined') {
+				setTimeout(function() {
+					startSound.play();
+					$('body').append('<pre>' + startSoundIntervals[index] + ': start</pre>');
+					playStart(++index);
+				}, (index == 0? startSoundIntervals[index] : (startSoundIntervals[index] - startSoundIntervals[index-1])) * 1000);
+			} else {
+				return false;
+			}
+		}
+
+		function playEnd(index) {
+			var index = index || 0;
+			if (typeof(endSoundIntervals[index]) != 'undefined') {
+				setTimeout(function() {
+					endSound.play();
+					$('body').append('<pre>' + endSoundIntervals[index] + ': end</pre>');
+					playEnd(++index);
+				}, (index == 0? endSoundIntervals[index] : (endSoundIntervals[index] - endSoundIntervals[index-1])) * 1000);
+			} else {
+				return false;
+			}
+		}
+
+		$(function() {
+			playStart();
+			playEnd();
+		});
+	</script>
+	<embed src="start.wav" autostart="false" width="0" height="0" id="soundStart" enablejavascript="true">
+	<embed src="end.wav" autostart="false" width="0" height="0" id="soundEnd" enablejavascript="true">
+</body>
+</html>
