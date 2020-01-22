@@ -1,27 +1,52 @@
 <!DOCTYPE html>
 <head>
 	<link href="js/jquery-ui-1.12.1/jquery-ui.min.css" rel="stylesheet">
+	<link href="style.css" rel="stylesheet">
 </head>
 <body>
 	<div id='settings'>
 		<div id='inhale'>
 			<label>Inhale</label>
-			<input type='text' name='inhale'>
+			<div id="inhale-range" style="height:250px;"></div>
 		</div>
 		<div id='inhale-hold'>
 			<label>Inhale Hold</label>
-			<input type='text' name='inhale-hold'>
+			<div id="inhale-hold-range" style="height:250px;"></div>
 		</div>
 		<div id='exhale'>
 			<label>Exhale</label>
-			<input type='text' name='exhale'>
+			<div id="exhale-range" style="height:250px;"></div>
 		</div>
-		<div id='exhale-hold'></div>
-		<div id='increase-time'></div>
+		<div id='exhale-hold'>
+			<label>Exhale Hold</label>
+			<div id="exhale-hold-range" style="height:250px;"></div>
+		</div>
+		<div id='time'>
+			<label>Time</label>
+			<div id="time-range" style="height:250px;"></div>
+		</div>
 	</div>
 	<div id='visualization'></div>
 	<input type='button' id='trigger' value='start'>
 	<script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
 	<script type="text/javascript" src="js/jquery-ui-1.12.1/jquery-ui.min.js"></script>
+	<script>
+		var ranges = [
+			"#inhale-range",
+			"#inhale-hold-range",
+			"#exhale-range",
+			"#exhale-hold-range",
+			"#time-range"
+		];
+	  	$(function() {
+	  		ranges.forEach(function(rangeName) {
+		    	$(rangeName).slider({
+		      		orientation: "vertical",
+		      		range: true,
+		      		values: [ 17, 67 ],
+		    	});
+		    });
+		});
+    </script>
 </body>
 </html>
