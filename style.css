@@ -14,3 +14,12 @@
 #settings .ui-slider {
     margin: auto;
 }
+
+#settings .ui-slider-handle {
+    width: 3em;
+    height: 1.6em;
+    margin-top: -.8em;
+    text-align: center;
+    line-height: 1.6em;
+    margin-left: -0.8em;
+}
