@@ -1,5 +1,5 @@
 #settings, #visualization, #controls {
-    width: 700px;
+    width: 800px;
     margin: auto;
     text-align: center;
 }
@@ -8,11 +8,11 @@
     display: inline-block;
     text-align: center;
     margin: 0 10px;
-    width: 100px;
+    width: 120px;
 }
 
 #settings .ui-slider {
-    margin: auto;
+    margin: 30px auto;
 }
 
 #settings .ui-slider-handle {

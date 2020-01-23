@@ -3,7 +3,7 @@ var ranges = [
     {id: "#inhale-hold-range", min: 0, max: 60, step: 1, infinity: false},
     {id: "#exhale-range", min: 1, max: 30, step: 1, infinity: false},
     {id: "#exhale-hold-range", min: 0, max: 60, step: 1, infinity: false},
-    {id: "#time-range", min: 1, max: 30, step: 1, infinity: true}
+    {id: "#duration-range", min: 1, max: 30, step: 1, infinity: true}
 ];
 
 var getHandleText = function (range, value) {
