@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <head>
 	<link href="js/jquery-ui-1.12.1/jquery-ui.min.css" rel="stylesheet">
-	<link href="style.css" rel="stylesheet">
+	<link href="css/style.css" rel="stylesheet">
 </head>
 <body>
 	<div id='settings'>
@@ -35,29 +35,6 @@
 	</div>
 	<script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
 	<script type="text/javascript" src="js/jquery-ui-1.12.1/jquery-ui.min.js"></script>
-	<script>
-		var ranges = [
-			"#inhale-range",
-			"#inhale-hold-range",
-			"#exhale-range",
-			"#exhale-hold-range",
-			"#time-range"
-		];
-		$(function() {
-			ranges.forEach(function(rangeName) {
-				$(rangeName).slider({
-					orientation: "vertical",
-					range: false,
-					value: 50,
-					create: function() {
-						$(this).find('.ui-slider-handle').text($(this).slider("value"));
-					},
-					slide: function(event, ui) {
-						$(this).find('.ui-slider-handle').text(ui.value);
-					},
-				});
-			});
-		});
-	</script>
+	<script type="text/javascript" src="js/app.js"></script>
 </body>
 </html>
