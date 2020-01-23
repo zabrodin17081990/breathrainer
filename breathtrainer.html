@@ -26,8 +26,13 @@
 			<div id="time-range" style="height:250px;"></div>
 		</div>
 	</div>
-	<div id='visualization'></div>
-	<input type='button' id='trigger' value='start'>
+	<div id='visualization'>
+		<div class="timeline">00:00:00</div>
+	</div>
+	<div id='controls'>
+		<input type='button' id='start-stop-counter' value='start'>
+		<input type='button' id='reset-counter' value='reset'>
+	</div>
 	<script type="text/javascript" src="js/jquery-3.4.1.min.js"></script>
 	<script type="text/javascript" src="js/jquery-ui-1.12.1/jquery-ui.min.js"></script>
 	<script>
@@ -38,15 +43,15 @@
 			"#exhale-hold-range",
 			"#time-range"
 		];
-	  	$(function() {
-	  		ranges.forEach(function(rangeName) {
-		    	$(rangeName).slider({
-		      		orientation: "vertical",
-		      		range: true,
-		      		values: [ 17, 67 ],
-		    	});
-		    });
+		$(function() {
+			ranges.forEach(function(rangeName) {
+				$(rangeName).slider({
+					orientation: "vertical",
+					range: false,
+					value: 50,
+				});
+			});
 		});
-    </script>
+	</script>
 </body>
 </html>

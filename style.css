@@ -1,3 +1,11 @@
+#settings, #visualization, #controls {
+    width: 600px;
+    margin: auto;
+    text-align: center;
+}
+
 #settings > div {
-	display: inline-block;
+    display: inline-block;
+    text-align: center;
+    margin: 0 10px;
 }
