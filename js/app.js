@@ -13,6 +13,12 @@ var App = {
         const defaultHandleClass = '.ui-slider-handle';
         return $(slider).find(defaultHandleClass);
     },
+    tick: function() {
+        $('#timeline').text(App.getTimestamp() - App.startTime);
+    },
+    getTimestamp: function() {
+        return Math.floor(Date.now() / 1000);
+    },
     init: function() {
         App.ranges.forEach(function(range) {
             $(range.id).slider({
@@ -31,6 +37,16 @@ var App = {
                     App.getSliderHandle(this).text(handleText);
                 },
             });
+        });
+        $('#start-stop-counter').click(function() {
+            App.startTime = App.getTimestamp();
+            App.interval = setInterval(App.tick, 1000);
+            App.tick();
+        });
+        $('#reset-counter').click(function() {
+            App.startTime = null;
+            clearInterval(App.interval);
+            $('#timeline').text('00:00:00');
         });
     },
 };
