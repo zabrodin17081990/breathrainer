@@ -54,6 +54,15 @@ var App = {
             App.ranges.outHold.value;            
     },
     init: function() {
+        App.bindActions();
+        App.loadSettings();
+    },
+    bindActions: function() {
+        App.initSliders();
+        App.bindStartButton();
+        App.bindResetButton();
+    },
+    initSliders: function() {
         $.each(App.ranges, function(rangeName, range) {
             $(range.id).slider({
                 orientation: "vertical",
@@ -79,6 +88,8 @@ var App = {
                 },
             });
         });
+    },
+    bindStartButton: function() {
         $('#start-stop-counter').click(function() {
             clearInterval(App.interval);
             App.calculateCycleDuration();
@@ -86,6 +97,8 @@ var App = {
             App.interval = setInterval(App.tick, 40);
             App.tick();
         });
+    },
+    bindResetButton: function() {
         $('#reset-counter').click(function() {
             App.startTime = null;
             clearInterval(App.interval);
@@ -94,6 +107,8 @@ var App = {
             $('#svg').html('');
         });
     },
+    loadSettings: function() {
+    }
 };
 
 $(function() {
