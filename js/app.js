@@ -1,10 +1,10 @@
 var App = {
     ranges: {
-        in: {id: "#inhale-range", name: 'In', min: 1, max: 30, step: 1, infinity: false, borderColor: 'tomato', backColor: 'white'},
-        inHold: {id: "#inhale-hold-range", name: "In\nHold", min: 1, max: 30, step: 1, infinity: false, borderColor: 'cyan', backColor: 'white'},
-        out: {id: "#exhale-range", name: "Out", min: 1, max: 30, step: 1, infinity: false, borderColor: 'blue', backColor: 'white'},
-        outHold: {id: "#exhale-hold-range", name: "Out\nHold", min: 1, max: 30, step: 1, infinity: false, borderColor: 'green', backColor: 'white'},
-        duration: {id: "#duration-range", min: 1, max: 30, step: 1, infinity: true, borderColor: 'green', backColor: 'white'}
+        in: {id: "#inhale-range", name: 'In', min: 1, max: 30, step: 1, infinity: false, borderColor: 'tomato', backColor: 'white', value: 5},
+        inHold: {id: "#inhale-hold-range", name: "In\nHold", min: 1, max: 30, step: 1, infinity: false, borderColor: 'cyan', backColor: 'white', value: 5},
+        out: {id: "#exhale-range", name: "Out", min: 1, max: 30, step: 1, infinity: false, borderColor: 'blue', backColor: 'white', value: 5},
+        outHold: {id: "#exhale-hold-range", name: "Out\nHold", min: 1, max: 30, step: 1, infinity: false, borderColor: 'green', backColor: 'white', value: 5},
+        duration: {id: "#duration-range", min: 1, max: 30, step: 1, infinity: true, borderColor: 'green', backColor: 'white', value: 5}
     },
     getHandleText: function (range, value) {
         return range.infinity && range.max == value ? '∞' : value;
@@ -54,8 +54,8 @@ var App = {
             App.ranges.outHold.value;            
     },
     init: function() {
-        App.bindActions();
         App.loadSettings();
+        App.bindActions();
     },
     bindActions: function() {
         App.initSliders();
@@ -63,11 +63,12 @@ var App = {
         App.bindResetButton();
     },
     initSliders: function() {
-        $.each(App.ranges, function(rangeName, range) {
+        var ranges = JSON.parse(window.localStorage.ranges);
+        $.each(ranges, function(rangeName, range) {
             $(range.id).slider({
                 orientation: "vertical",
                 range: false,
-                value: 10,
+                value: range.value,
                 min: range.min,
                 max: range.max,
                 step: range.step,
@@ -108,6 +109,13 @@ var App = {
         });
     },
     loadSettings: function() {
+        if (typeof(Storage) !== "undefined") {
+            if (!window.localStorage.ranges) {
+                window.localStorage.ranges = JSON.stringify(App.ranges);
+            }
+        } else {
+            console.log('localStorage is not supported');
+        }
     }
 };
 
