@@ -17,7 +17,7 @@ var App = {
         var time = (Date.now() - App.startTime) / 1000;
         // $('#timeline').text(Math.floor(time));
         var currentCycleDuration = (time % App.cycleDuration);
-        var breathRanges = JSON.parse(JSON.stringify(App.ranges));
+        var breathRanges = JSON.parse(window.localStorage.ranges);
         delete(breathRanges.duration);
         $.each(breathRanges, function(rangeName, range) {
             if (range.value > currentCycleDuration) {
@@ -73,17 +73,23 @@ var App = {
                 max: range.max,
                 step: range.step,
                 create: function() {
-                    App.ranges[rangeName].value = $(this).slider("value");
-                    var handleText = App.getHandleText(range, App.ranges[rangeName].value);
+                    var ranges = JSON.parse(window.localStorage.ranges);
+                    var handleText = App.getHandleText(range, ranges[rangeName].value);
                     App.getSliderHandle(this).text(handleText);
                 },
                 slide: function(event, ui) {
-                    var handleText = App.getHandleText(range, ui.value);
+                    var ranges = JSON.parse(window.localStorage.ranges);
+                    ranges[rangeName].value = ui.value;
+                    window.localStorage.ranges = JSON.stringify(ranges);
+                    var handleText = App.getHandleText(range, ranges[rangeName].value);
                     App.getSliderHandle(this).text(handleText);
+                    App.calculateCycleDuration();
                 },
                 change: function(event, ui) {
-                    App.ranges[rangeName].value = $(this).slider("value");
-                    var handleText = App.getHandleText(range, App.ranges[rangeName].value);
+                    var ranges = JSON.parse(window.localStorage.ranges);
+                    ranges[rangeName].value = $(this).slider("value");
+                    window.localStorage.ranges = JSON.stringify(ranges);
+                    var handleText = App.getHandleText(range, ranges[rangeName].value);
                     App.getSliderHandle(this).text(handleText);
                     App.calculateCycleDuration();
                 },
