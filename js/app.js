@@ -116,7 +116,9 @@ var App = {
     },
     loadSettings: function() {
         if (typeof(Storage) !== "undefined") {
-            if (!window.localStorage.ranges) {
+            try {
+                JSON.parse(window.localStorage.ranges)
+            } catch {
                 window.localStorage.ranges = JSON.stringify(App.ranges);
             }
         } else {
