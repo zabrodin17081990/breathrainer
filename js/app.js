@@ -27,6 +27,7 @@ var App = {
                 currentCycleDuration -= range.value;
             }
         });
+        App.isFinished(Math.floor(time));
     },
     getTimeFromSeconds: function(seconds) {
         var hours = Math.floor(seconds / 3600);
@@ -36,6 +37,17 @@ var App = {
     },
     addLeadZero: function(number) {
         return Math.abs(number) < 10 ? '0' + number : number;
+    },
+    isFinished: function(seconds) {
+        var ranges = JSON.parse(window.localStorage.ranges);
+        if (ranges.duration.value * 60 <= seconds) {
+            clearInterval(App.interval);
+            App.outFinishMessage();
+        }
+    },
+    outFinishMessage: function() {
+        // TODO
+        console.log('training is finished');
     },
     drawCircle: function(range, percentage) {
         var svgVars = App.calculateSVGVars(range, percentage);
