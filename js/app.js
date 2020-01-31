@@ -15,7 +15,7 @@ var App = {
     },
     tick: function() {
         var time = (Date.now() - App.startTime) / 1000;
-        // $('#timeline').text(Math.floor(time));
+        $('#timeline').text(App.getTimeFromSeconds(Math.floor(time)));
         var currentCycleDuration = (time % App.cycleDuration);
         var breathRanges = JSON.parse(window.localStorage.ranges);
         delete(breathRanges.duration);
@@ -29,9 +29,18 @@ var App = {
             }
         });
     },
+    getTimeFromSeconds: function(seconds) {
+        var hours = Math.floor(seconds / 3600);
+        var minutes = Math.floor((seconds - hours * 3600) / 60);;
+        var seconds = Math.floor(seconds - hours * 3600 - minutes * 60);
+        return App.addLeadZero(hours) + ':' + App.addLeadZero(minutes) + ':' + App.addLeadZero(seconds);
+    },
+    addLeadZero: function(number) {
+        return Math.abs(number) < 10 ? '0' + number : number;
+    },
     drawCircle: function(range, percentage) {
         var svgVars = App.calculateSVGVars(range, percentage);
-        var svg = '<svg height="200" width="200" viewBox="0 0 200 200" style="transform: rotate(-0.25turn)">'+
+        var svg = '<svg height="300" width="300" viewBox="0 0 200 200" style="transform: rotate(-0.25turn)">'+
                     '<g id="circles">'+
                         '<circle r="' + svgVars.bigCircleR + '" cx="100" cy="100" fill="' + range.backColor + '" />'+
                         '<circle r="' + svgVars.smallCircleR + '" cx="100" cy="100" fill="' + range.backColor + '"'+
