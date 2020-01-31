@@ -1,10 +1,10 @@
 var App = {
     ranges: {
-        in: {id: "#inhale-range", name: 'In', min: 1, max: 30, step: 1, infinity: false, borderColor: 'tomato', backColor: 'white', value: 5, direction: 1},
-        inHold: {id: "#inhale-hold-range", name: "In\nHold", min: 1, max: 30, step: 1, infinity: false, borderColor: 'cyan', backColor: 'white', value: 5, direction: true},
-        out: {id: "#exhale-range", name: "Out", min: 1, max: 30, step: 1, infinity: false, borderColor: 'blue', backColor: 'white', value: 5, direction: -1},
-        outHold: {id: "#exhale-hold-range", name: "Out\nHold", min: 1, max: 30, step: 1, infinity: false, borderColor: 'green', backColor: 'white', value: 5, direction: false},
-        duration: {id: "#duration-range", min: 1, max: 30, step: 1, infinity: true, borderColor: 'green', backColor: 'white', value: 5}
+        in: {id: "#inhale-range", name: 'In', min: 1, max: 15, step: 1, infinity: false, borderColor: 'tomato', backColor: 'white', value: 5, direction: 1},
+        inHold: {id: "#inhale-hold-range", name: "In\nHold", min: 1, max: 15, step: 1, infinity: false, borderColor: 'cyan', backColor: 'white', value: 5, direction: true},
+        out: {id: "#exhale-range", name: "Out", min: 1, max: 15, step: 1, infinity: false, borderColor: 'blue', backColor: 'white', value: 5, direction: -1},
+        outHold: {id: "#exhale-hold-range", name: "Out\nHold", min: 1, max: 15, step: 1, infinity: false, borderColor: 'green', backColor: 'white', value: 5, direction: false},
+        duration: {id: "#duration-range", min: 1, max: 30, step: 1, infinity: true, borderColor: 'green', backColor: 'white', value: 10}
     },
     getHandleText: function (range, value) {
         return range.infinity && range.max == value ? '∞' : value;
@@ -21,7 +21,6 @@ var App = {
         delete(breathRanges.duration);
         $.each(breathRanges, function(rangeName, range) {
             if (range.value > currentCycleDuration) {
-                // $('#currentAction').text(rangeName + ' ' + Math.round(currentCycleDuration / range.value * 100) + '%');
                 App.drawCircle(range, currentCycleDuration / range.value);
                 return false;
             } else {
@@ -141,7 +140,7 @@ var App = {
                     App.getSliderHandle(this).text(handleText);
                     App.calculateCycleDuration();
                 },
-            });
+            }).height(100);
         });
     },
     bindStartButton: function() {
