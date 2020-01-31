@@ -1,9 +1,9 @@
 var App = {
     ranges: {
-        in: {id: "#inhale-range", name: 'In', min: 1, max: 30, step: 1, infinity: false, borderColor: 'tomato', backColor: 'white', value: 5},
-        inHold: {id: "#inhale-hold-range", name: "In\nHold", min: 1, max: 30, step: 1, infinity: false, borderColor: 'cyan', backColor: 'white', value: 5},
-        out: {id: "#exhale-range", name: "Out", min: 1, max: 30, step: 1, infinity: false, borderColor: 'blue', backColor: 'white', value: 5},
-        outHold: {id: "#exhale-hold-range", name: "Out\nHold", min: 1, max: 30, step: 1, infinity: false, borderColor: 'green', backColor: 'white', value: 5},
+        in: {id: "#inhale-range", name: 'In', min: 1, max: 30, step: 1, infinity: false, borderColor: 'tomato', backColor: 'white', value: 5, direction: 1},
+        inHold: {id: "#inhale-hold-range", name: "In\nHold", min: 1, max: 30, step: 1, infinity: false, borderColor: 'cyan', backColor: 'white', value: 5, direction: true},
+        out: {id: "#exhale-range", name: "Out", min: 1, max: 30, step: 1, infinity: false, borderColor: 'blue', backColor: 'white', value: 5, direction: -1},
+        outHold: {id: "#exhale-hold-range", name: "Out\nHold", min: 1, max: 30, step: 1, infinity: false, borderColor: 'green', backColor: 'white', value: 5, direction: false},
         duration: {id: "#duration-range", min: 1, max: 30, step: 1, infinity: true, borderColor: 'green', backColor: 'white', value: 5}
     },
     getHandleText: function (range, value) {
@@ -30,15 +30,15 @@ var App = {
         });
     },
     drawCircle: function(range, percentage) {
-        const fullPerimetr = 510;
+        var svgVars = App.calculateSVGVars(range, percentage);
         var svg = '<svg height="200" width="200" viewBox="0 0 200 200" style="transform: rotate(-0.25turn)">'+
                     '<g id="circles">'+
-                        '<circle r="100" cx="100" cy="100" fill="' + range.backColor + '" />'+
-                        '<circle r="80" cx="100" cy="100" fill="' + range.backColor + '"'+
+                        '<circle r="' + svgVars.bigCircleR + '" cx="100" cy="100" fill="' + range.backColor + '" />'+
+                        '<circle r="' + svgVars.smallCircleR + '" cx="100" cy="100" fill="' + range.backColor + '"'+
                             ' stroke="' + range.borderColor + '"'+
-                            ' stroke-width="40"'+
+                            ' stroke-width="' + svgVars.strokeWidth + '"'+
                             ' scale="2.0"' +
-                            ' stroke-dasharray="' + fullPerimetr * percentage + ' ' + fullPerimetr + '" />'+
+                            ' stroke-dasharray="' + svgVars.strokePerimetr + ' ' + svgVars.maxPerimetr + '" />'+
                             '<text x="50%"" y="50%" text-anchor="middle" transform="rotate(90 100,100)"  font-family="Arial, Helvetica, sans-serif" font-size="25px" dy=".3em">'+
                             range.name +
                             '</text>' +
@@ -46,12 +46,51 @@ var App = {
                     '</svg>';
         $('#svg').html(svg);
     },
+    calculateSVGVars: function(range, percentage) {
+        var svgVars = {};
+        var svgConsts = {
+            bigCircleR: { l: 80, diff: 20 },
+            smallCircleR: { l: 70, diff: 10 },
+            strokeWidth: { l: 20, diff: 20 },
+            strokePerimetr: { l: 440, diff: 62 }
+        };
+        $.each(svgConsts, function(constName, value) {
+            svgVars[constName] = (constName == 'strokePerimetr') ? value.l * percentage : value.l;
+
+            if (typeof(range.direction) == 'number') {
+                    svgVars[constName] += value.diff * percentage * range.direction;
+            } else {
+                if (range.direction) {
+                    svgVars[constName] += value.diff;
+                }
+            }
+            switch(range.direction) {
+                case 1:
+                    svgVars[constName] = (constName == 'strokePerimetr') ? value.l * percentage : value.l;
+                    svgVars[constName] += value.diff * percentage;
+                    break;
+                case -1:
+                    svgVars[constName] = (constName == 'strokePerimetr') ? value.l * percentage : value.l;
+                    svgVars[constName] += value.diff - value.diff * percentage;
+                    break;
+                case true:
+                    svgVars[constName] = (constName == 'strokePerimetr') ? (value.l + value.diff) * percentage : (value.l + value.diff);
+                    break;
+                case false:
+                    svgVars[constName] = (constName == 'strokePerimetr') ? value.l * percentage : value.l;
+                    break;
+            }
+        });
+        svgVars.maxPerimetr = svgConsts.strokePerimetr.l + svgConsts.strokePerimetr.diff;
+        return svgVars;
+    },
     calculateCycleDuration: function() {
+        var ranges = JSON.parse(window.localStorage.ranges);
         App.cycleDuration = 
-            App.ranges.in.value +
-            App.ranges.inHold.value +
-            App.ranges.out.value +
-            App.ranges.outHold.value;            
+            ranges.in.value +
+            ranges.inHold.value +
+            ranges.out.value +
+            ranges.outHold.value;
     },
     init: function() {
         App.loadSettings();
