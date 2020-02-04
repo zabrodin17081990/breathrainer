@@ -1,9 +1,9 @@
 var App = {
     ranges: {
         in: {id: "#inhale-range", name: 'In', min: 1, max: 15, step: 1, infinity: false, borderColor: 'tomato', backColor: 'white', value: 5, direction: 1},
-        inHold: {id: "#inhale-hold-range", name: "In\nHold", min: 1, max: 15, step: 1, infinity: false, borderColor: 'cyan', backColor: 'white', value: 5, direction: true},
-        out: {id: "#exhale-range", name: "Out", min: 1, max: 15, step: 1, infinity: false, borderColor: 'blue', backColor: 'white', value: 5, direction: -1},
-        outHold: {id: "#exhale-hold-range", name: "Out\nHold", min: 1, max: 15, step: 1, infinity: false, borderColor: 'green', backColor: 'white', value: 5, direction: false},
+        inHold: {id: "#inhale-hold-range", name: "In\nHold", min: 1, max: 15, step: 1, infinity: false, borderColor: 'orange', backColor: 'white', value: 5, direction: true},
+        out: {id: "#exhale-range", name: "Out", min: 1, max: 15, step: 1, infinity: false, borderColor: 'green', backColor: 'white', value: 5, direction: -1},
+        outHold: {id: "#exhale-hold-range", name: "Out\nHold", min: 1, max: 15, step: 1, infinity: false, borderColor: 'blue', backColor: 'white', value: 5, direction: false},
         duration: {id: "#duration-range", min: 1, max: 30, step: 1, infinity: true, borderColor: 'green', backColor: 'white', value: 10}
     },
     getHandleText: function (range, value) {
@@ -15,7 +15,7 @@ var App = {
     },
     tick: function() {
         var time = (Date.now() - App.startTime) / 1000;
-        $('#timeline').text(App.getTimeFromSeconds(Math.floor(time)));
+        $('#messages').text(App.getTimeFromSeconds(Math.floor(time)));
         var currentCycleDuration = (time % App.cycleDuration);
         var breathRanges = JSON.parse(window.localStorage.ranges);
         delete(breathRanges.duration);
@@ -41,13 +41,14 @@ var App = {
     isFinished: function(seconds) {
         var ranges = JSON.parse(window.localStorage.ranges);
         if (ranges.duration.value * 60 <= seconds) {
+            App.startTime = null;
             clearInterval(App.interval);
+            $('#svg').html('');
             App.outFinishMessage();
         }
     },
     outFinishMessage: function() {
-        // TODO
-        console.log('training is finished');
+        $('#messages').text('Тренировка закончена');
     },
     drawCircle: function(range, percentage) {
         var svgVars = App.calculateSVGVars(range, percentage);
@@ -157,6 +158,7 @@ var App = {
     },
     bindStartButton: function() {
         $('#start-stop-counter').click(function() {
+            $('#messages').text('');
             clearInterval(App.interval);
             App.calculateCycleDuration();
             App.startTime = Date.now();
@@ -168,7 +170,7 @@ var App = {
         $('#reset-counter').click(function() {
             App.startTime = null;
             clearInterval(App.interval);
-            $('#timeline').text('00:00:00');
+            $('#messages').text('00:00:00');
             $('#currentAction').text('');
             $('#svg').html('');
         });
